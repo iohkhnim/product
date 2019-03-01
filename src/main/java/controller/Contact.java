@@ -1,4 +1,4 @@
-package com.example.demo;
+package controller;
 
 public class Contact {
     private String Name;
