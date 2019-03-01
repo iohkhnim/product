@@ -1,4 +1,4 @@
-package controller;
+package dto;
 
 public class Contact {
     private String Name;
