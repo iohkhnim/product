@@ -1,26 +1,27 @@
 package dto;
 
 public class Contact {
-    private String Name;
-    private String Phone;
-    public Contact(String Name, String Phone){
-        this.setName(Name);
-        this.setPhone(Phone);
-    }
+  private String Name;
+  private String Phone;
 
-    public String getName() {
-        return Name;
-    }
+  public Contact(String Name, String Phone) {
+    this.setName(Name);
+    this.setPhone(Phone);
+  }
 
-    public void setName(String name) {
-        Name = name;
-    }
+  public String getName() {
+    return Name;
+  }
 
-    public String getPhone() {
-        return Phone;
-    }
+  public void setName(String name) {
+    Name = name;
+  }
 
-    public void setPhone(String phone) {
-        Phone = phone;
-    }
+  public String getPhone() {
+    return Phone;
+  }
+
+  public void setPhone(String phone) {
+    Phone = phone;
+  }
 }

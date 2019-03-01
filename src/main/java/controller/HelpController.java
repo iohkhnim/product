@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelpController {
-    @RequestMapping(value = "/help")
-    public String Help()    {
-        return "Help";
-    }
+  @RequestMapping(value = "/help")
+  public String Help() {
+    return "Help";
+  }
 }

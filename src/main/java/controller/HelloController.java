@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloController {
-    private String Email = "nguyenminhkhoi.red@gmail.com";
+  private String Email = "nguyenminhkhoi.red@gmail.com";
 
-    @RequestMapping(value = "/hello/{name}")
-    public String Hello(@PathVariable("name") String myname) {
-        return "Hello " + myname;
-    }
+  @RequestMapping(value = "/hello/{name}")
+  public String Hello(@PathVariable("name") String myname) {
+    return "Hello " + myname;
+  }
 }
