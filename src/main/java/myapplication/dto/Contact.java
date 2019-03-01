@@ -1,4 +1,4 @@
-package dto;
+package myapplication.dto;
 
 public class Contact {
   private String Name;

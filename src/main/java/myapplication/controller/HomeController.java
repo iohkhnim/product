@@ -1,10 +1,11 @@
-package controller;
+package myapplication.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
+
   @RequestMapping(value = "/")
   public String helloworld() {
     return "hello.html";
