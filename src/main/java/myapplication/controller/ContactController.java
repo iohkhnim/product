@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ContactController {
 
   private @Value("${phone}")
-  String Phone;
+  String phone;
   private @Value("${name}")
-  String Name;
+  String name;
 
   @RequestMapping(value = "/contact")
-  public Contact contact() {
-    return new Contact(Name, Phone);
+  public Contact ContactIndex() {
+    return new Contact(name, phone);
   }
 }

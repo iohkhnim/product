@@ -10,7 +10,7 @@ public class HelloController {
   private String Email = "nguyenminhkhoi.red@gmail.com";
 
   @RequestMapping(value = "/hello/{name}")
-  public String Hello(@PathVariable("name") String myname) {
-    return "Hello " + myname;
+  public String Hello(@PathVariable("name") String my_name) {
+    return "Hello " + my_name;
   }
 }
