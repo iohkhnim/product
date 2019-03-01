@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelpController {
 
   @RequestMapping(value = "/help")
-  public String Help() {
+  public String sendHelp() {
     return "Help";
   }
 }

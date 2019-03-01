@@ -15,7 +15,7 @@ public class ContactController {
   String name;
 
   @RequestMapping(value = "/contact")
-  public Contact ContactIndex() {
+  public Contact sayContact() {
     return new Contact(name, phone);
   }
 }

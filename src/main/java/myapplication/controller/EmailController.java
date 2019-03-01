@@ -9,7 +9,7 @@ public class EmailController {
   private final String email = "nguyenminhkhoi.red@gmail.com";
 
   @RequestMapping(value = "/email")
-  public String Email() {
+  public String sayEmail() {
     return "Email:" + email;
   }
 }
