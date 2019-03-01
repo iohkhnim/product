@@ -16,6 +16,7 @@ public class ContactController {
 
   @RequestMapping(value = "/contact")
   public Contact sayContact() {
-    return new Contact(name, phone);
+    Contact contact = new Contact(name, phone);
+    return contact;
   }
 }
