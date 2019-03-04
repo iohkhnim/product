@@ -1,8 +1,9 @@
-package myapplication.dao;
+package myapplication.dao.dao.impl;
 
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import myapplication.dao.IProductDAO;
 import myapplication.dto.Product;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
