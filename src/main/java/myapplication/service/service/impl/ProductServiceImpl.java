@@ -5,7 +5,9 @@ import myapplication.dao.IProductDAO;
 import myapplication.dto.Product;
 import myapplication.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ProductServiceImpl implements IProductService {
 
   @Autowired
