@@ -28,6 +28,7 @@ public class ContactControllerTest {
   @Test
   public void AccessContact_thenReturnJson() throws Exception {
     this.mockMvc.perform(get("/contact")).andDo(print()).andExpect(status().isOk())
-        .andExpect(content().string(containsString("{\"name\":\"Nguyen Minh Khoi\",\"phone\":\"0707333124\"}")));
+        .andExpect(content()
+            .string(containsString("{\"name\":\"Nguyen Minh Khoi\",\"phone\":\"0707333124\"}")));
   }
 }
