@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "product")
@@ -25,6 +27,14 @@ public class Product implements Serializable {
 
   @Column(name = "supplier")
   private String supplier;
+
+  @Column(name = "createdtime", columnDefinition="DATETIME")
+  @Temporal(TemporalType.TIMESTAMP)
+  private java.util.Date createdTime;
+
+  @Column(name = "updatedtime", columnDefinition="DATETIME")
+  @Temporal(TemporalType.TIMESTAMP)
+  private java.util.Date updatedTime;
 
   public int getId() {
     return id;
@@ -56,5 +66,21 @@ public class Product implements Serializable {
 
   public void setSupplier(String supplier) {
     this.supplier = supplier;
+  }
+
+  public java.util.Date getCreatedTime() {
+    return createdTime;
+  }
+
+  public void setCreatedTime(java.util.Date createdTime) {
+    this.createdTime = createdTime;
+  }
+
+  public java.util.Date getUpdatedTime() {
+    return updatedTime;
+  }
+
+  public void setUpdatedTime(java.util.Date updatedTime) {
+    this.updatedTime = updatedTime;
   }
 }

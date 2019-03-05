@@ -1,6 +1,8 @@
 package myapplication.dao.dao.impl;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import myapplication.dao.IProductDAO;
@@ -44,6 +46,7 @@ public class ImplProductDAO implements IProductDAO {
       prod.setName(product.getName());
       prod.setPrice(product.getPrice());
       prod.setSupplier(product.getSupplier());
+      prod.setUpdatedTime(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
       entityManager.flush();
       return true;
     } catch (Exception ex) {
