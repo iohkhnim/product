@@ -1,7 +1,6 @@
 package myapplication.controller;
 
 import java.util.List;
-import myapplication.dao.IProductDAO;
 import myapplication.dto.Product;
 import myapplication.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +55,7 @@ public class ProductController {
   }
 
   @DeleteMapping("delete/{id}")
-  public ResponseEntity<Void> delete(@PathVariable("id") int id){
+  public ResponseEntity<Void> delete(@PathVariable("id") int id) {
     Boolean flag = productService.delete(id);
     if (flag.equals(true)) {
       return new ResponseEntity<Void>(HttpStatus.OK);
