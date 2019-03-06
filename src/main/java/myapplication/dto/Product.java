@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import org.springframework.lang.Nullable;
 
 @Entity
@@ -37,6 +38,10 @@ public class Product implements Serializable {
   @Temporal(TemporalType.TIMESTAMP)
   private java.util.Date updatedTime;
 
+  @Transient
+  private int price;
+
+  @Transient
   private List<Price> priceHistory;
 
   public int getId() {
@@ -77,5 +82,13 @@ public class Product implements Serializable {
 
   public void setUpdatedTime(java.util.Date updatedTime) {
     this.updatedTime = updatedTime;
+  }
+
+  public int getPrice() {
+    return price;
+  }
+
+  public void setPrice(int price) {
+    this.price = price;
   }
 }
