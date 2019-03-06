@@ -32,6 +32,9 @@ public class ImplProductDAO implements IProductDAO {
   @Override
   public Boolean create(Product product) {
     try {
+      product.setCreatedTime(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
+      product.setUpdatedTime(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
+      //entityManager.persist(product);
       entityManager.persist(product);
       return true;
     } catch (Exception ex) {
