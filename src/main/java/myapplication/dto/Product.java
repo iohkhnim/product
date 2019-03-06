@@ -1,6 +1,7 @@
 package myapplication.dto;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,9 +24,6 @@ public class Product implements Serializable {
   @Column(name = "name")
   private String name;
 
-  @Column(name = "price")
-  private int price;
-
   @Column(name = "supplier")
   private String supplier;
 
@@ -38,6 +36,8 @@ public class Product implements Serializable {
   @Nullable
   @Temporal(TemporalType.TIMESTAMP)
   private java.util.Date updatedTime;
+
+  private List<Price> priceHistory;
 
   public int getId() {
     return id;
@@ -53,14 +53,6 @@ public class Product implements Serializable {
 
   public void setName(String name) {
     this.name = name;
-  }
-
-  public int getPrice() {
-    return price;
-  }
-
-  public void setPrice(int price) {
-    this.price = price;
   }
 
   public String getSupplier() {
