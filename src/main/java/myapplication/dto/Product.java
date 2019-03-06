@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name = "product")
@@ -29,10 +30,12 @@ public class Product implements Serializable {
   private String supplier;
 
   @Column(name = "createdtime", columnDefinition="DATETIME")
+  @Nullable
   @Temporal(TemporalType.TIMESTAMP)
   private java.util.Date createdTime;
 
   @Column(name = "updatedtime", columnDefinition="DATETIME")
+  @Nullable
   @Temporal(TemporalType.TIMESTAMP)
   private java.util.Date updatedTime;
 
