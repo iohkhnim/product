@@ -91,4 +91,12 @@ public class Product implements Serializable {
   public void setPrice(int price) {
     this.price = price;
   }
+
+  public List<Price> getPriceHistory() {
+    return priceHistory;
+  }
+
+  public void setPriceHistory(List<Price> priceHistory) {
+    this.priceHistory = priceHistory;
+  }
 }

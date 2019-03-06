@@ -8,7 +8,9 @@ import javax.persistence.PersistenceContext;
 import myapplication.dao.IProductDAO;
 import myapplication.dto.Price;
 import myapplication.dto.Product;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,7 @@ public class ImplProductDAO implements IProductDAO {
     String hql = "FROM Product as prod ORDER BY prod.id";
     List<Product> list = (List<Product>) entityManager.createQuery(hql).getResultList();
     RestTemplate restTemplate = new RestTemplate();
+    //get product price
     String url = "http://localhost:8085/price/findProductPrice/";
     ResponseEntity<String> response;
     for (Product item : list) {
@@ -44,6 +47,16 @@ public class ImplProductDAO implements IProductDAO {
     final String url = "http://localhost:8085/price/findProductPrice/";
     ResponseEntity<String> response = restTemplate.getForEntity(url + id, String.class);
     prod.setPrice(Integer.parseInt(response.getBody()));
+
+    //retrieve priceHistory
+    ResponseEntity<List<Price>> response2 = restTemplate.exchange(
+        "http://localhost:8085/price/findProductPriceHistory/"+id,
+        HttpMethod.GET,
+        null,
+        new ParameterizedTypeReference<List<Price>>(){});
+    List<Price> list = response2.getBody();
+    prod.setPriceHistory(list);
+
     return prod;
   }
 
