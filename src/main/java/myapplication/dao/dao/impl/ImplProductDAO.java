@@ -1,5 +1,6 @@
 package myapplication.dao.dao.impl;
 
+import com.khoi.proto.PriceServiceGrpc;
 import myapplication.dao.IProductDAO;
 import myapplication.dto.Price;
 import myapplication.dto.Product;
