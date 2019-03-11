@@ -41,11 +41,11 @@ public class ImplProductDAO implements IProductDAO {
   public Product findByid(int id) {
     Product prod = entityManager.find(Product.class, id);
     // retrieve price from Price API
-    RestTemplate restTemplate = new RestTemplate();
+    /*RestTemplate restTemplate = new RestTemplate();
     final String url = "http://localhost:8085/price/findProductPrice/";
     ResponseEntity<String> response = restTemplate.getForEntity(url + id, String.class);
-    prod.setPrice(Integer.parseInt(response.getBody()));
-
+    prod.setPrice(Integer.parseInt(response.getBody()));*/
+    /*
     // retrieve priceHistory
     ResponseEntity<List<Price>> response2 =
         restTemplate.exchange(
@@ -54,7 +54,7 @@ public class ImplProductDAO implements IProductDAO {
             null,
             new ParameterizedTypeReference<List<Price>>() {});
     List<Price> list = response2.getBody();
-
+    */
     return prod;
   }
 

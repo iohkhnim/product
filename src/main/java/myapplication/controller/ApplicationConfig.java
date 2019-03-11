@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ApplicationConfig {
 
-  private String priceServiceEndpoint = "localhost:8085";
+  private String priceServiceEndpoint = "localhost:6565";
 
   @Bean
   Channel channel() {
@@ -17,7 +17,7 @@ public class ApplicationConfig {
   }
 
   @Bean
-  PriceServiceGrpc.PriceServiceBlockingStub priceServiceBlockingStub(Channel channel) {
+  PriceServiceGrpc.PriceServiceBlockingStub priceService(Channel channel) {
     return PriceServiceGrpc.newBlockingStub(channel);
   }
 }
