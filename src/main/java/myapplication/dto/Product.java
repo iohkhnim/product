@@ -47,7 +47,7 @@ public class Product implements Serializable {
   private List<Price> priceHistory;
 
   @Transient
-  private Iterator<PriceEntry> priceEntries;
+  private List<String> priceEntries;
 
   public int getId() {
     return id;
@@ -105,11 +105,11 @@ public class Product implements Serializable {
     this.priceHistory = priceHistory;
   }
 
-  public Iterator<PriceEntry> getPriceEntries() {
+  public List<String> getPriceEntries() {
     return priceEntries;
   }
 
-  public void setPriceEntries(Iterator<PriceEntry> priceEntries) {
+  public void setPriceEntries(List<String> priceEntries) {
     this.priceEntries = priceEntries;
   }
 }

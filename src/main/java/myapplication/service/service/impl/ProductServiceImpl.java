@@ -1,5 +1,6 @@
 package myapplication.service.service.impl;
 
+import com.google.protobuf.util.JsonFormat;
 import com.khoi.proto.CreateRequest;
 import com.khoi.proto.CreateResponse;
 import com.khoi.proto.DeleteRequest;
@@ -9,8 +10,12 @@ import com.khoi.proto.GetPriceRequest;
 import com.khoi.proto.GetPriceResponse;
 import com.khoi.proto.PriceEntry;
 import com.khoi.proto.PriceServiceGrpc;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import myapplication.dao.IProductDAO;
 import myapplication.dto.Product;
 import myapplication.service.IProductService;
@@ -26,6 +31,14 @@ public class ProductServiceImpl implements IProductService {
 
   public ProductServiceImpl(PriceServiceGrpc.PriceServiceBlockingStub priceService) {
     this.priceService = priceService;
+  }
+
+  private static <E> Collection<E> makeCollection(Iterable<E> iter) {
+    Collection<E> list = new ArrayList<E>();
+    for (E item : iter) {
+      list.add(item);
+    }
+    return list;
   }
 
   private static <T> Iterable<T> toIterable(final Iterator<T> iterator) {
@@ -48,10 +61,23 @@ public class ProductServiceImpl implements IProductService {
 
     Iterable<PriceEntry> entries = toIterable(priceService.getPriceHistory(
         GetPriceHistoryRequest.newBuilder().setProductId(id).build()));
+
+    List<PriceEntry> list1 = new ArrayList<>();
+    entries.forEach(list1::add);
+
+    List<String> strings = list1.stream()
+        .map(object -> Objects.toString(object, null))
+        .collect(Collectors.toList());
+
+    prod.setPriceEntries(strings);
+
+    System.out.println("!-----------------------!");
     for (PriceEntry entry : entries
     ) {
       System.out.println(entry.getPrice());
     }
+
+
 
     GetPriceResponse rs = priceService
         .getPrice(GetPriceRequest.newBuilder().setProductId(id).build());
