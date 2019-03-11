@@ -27,14 +27,14 @@ public class ImplProductDAO implements IProductDAO {
   public List<Product> findAll() {
     String hql = "FROM Product as prod ORDER BY prod.id";
     List<Product> list = (List<Product>) entityManager.createQuery(hql).getResultList();
-    RestTemplate restTemplate = new RestTemplate();
+   /* RestTemplate restTemplate = new RestTemplate();
     // get product price
     String url = "http://localhost:8085/price/findProductPrice/";
     ResponseEntity<String> response;
     for (Product item : list) {
       response = restTemplate.getForEntity(url + item.getId(), String.class);
       item.setPrice(Integer.parseInt(response.getBody()));
-    }
+    }*/
     return list;
   }
 

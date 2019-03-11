@@ -1,6 +1,6 @@
 package myapplication.service.service.impl;
 
-import com.google.protobuf.util.JsonFormat;
+import com.googlecode.protobuf.format.JsonFormat;
 import com.khoi.proto.CreateRequest;
 import com.khoi.proto.CreateResponse;
 import com.khoi.proto.DeleteRequest;
@@ -52,7 +52,13 @@ public class ProductServiceImpl implements IProductService {
 
   @Override
   public List<Product> findAll() {
-    return productDAO.findAll();
+    //return productDAO.findAll();
+    List<Product> list = productDAO.findAll();
+    for (Product prod : list) {
+        //get price
+      prod = findByid(prod.getId());
+    }
+    return list;
   }
 
   @Override
@@ -65,19 +71,19 @@ public class ProductServiceImpl implements IProductService {
     List<PriceEntry> list1 = new ArrayList<>();
     entries.forEach(list1::add);
 
-    List<String> strings = list1.stream()
+    //cach ta dao
+    /*List<String> strings = list1.stream()
         .map(object -> Objects.toString(object, null))
-        .collect(Collectors.toList());
+        .collect(Collectors.toList());*/
 
-    prod.setPriceEntries(strings);
+    List<String> strings = new ArrayList<>();
 
-    System.out.println("!-----------------------!");
-    for (PriceEntry entry : entries
-    ) {
-      System.out.println(entry.getPrice());
+    //cach khong ta dao
+    for (PriceEntry price : list1) {
+      strings.add(new JsonFormat().printToString(price));
     }
 
-
+    prod.setPriceEntries(strings);
 
     GetPriceResponse rs = priceService
         .getPrice(GetPriceRequest.newBuilder().setProductId(id).build());
