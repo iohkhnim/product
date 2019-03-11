@@ -67,13 +67,13 @@ public class ImplProductDAO implements IProductDAO {
       entityManager.persist(product);
 
       // create new Price
-      final String url = "http://localhost:8085/price/create";
+      /*final String url = "http://localhost:8085/price/create";
       Price price = new Price();
       price.setPrice(product.getPrice());
       price.setProduct_id(product.getId());
       RestTemplate restTemplate = new RestTemplate();
       HttpEntity<Price> requestBody = new HttpEntity<>(price);
-      ResponseEntity<Price> result = restTemplate.postForEntity(url, requestBody, Price.class);
+      ResponseEntity<Price> result = restTemplate.postForEntity(url, requestBody, Price.class);*/
 
       return true;
     } catch (Exception ex) {
@@ -83,17 +83,17 @@ public class ImplProductDAO implements IProductDAO {
 
   public Boolean update(Product product) {
     try {
-      int flag = 0; // mark if price is changed
       Product prod = findByid(product.getId());
       prod.setName(product.getName());
       prod.setSupplier(product.getSupplier());
       if (prod.getPrice() != product.getPrice()) {
         prod.setPrice(product.getPrice());
-        flag = 1;
       }
       prod.setUpdatedTime(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
       entityManager.flush();
       // create new Price
+
+      /*
       if (flag == 1) {
         final String url = "http://localhost:8085/price/create";
         Price price = new Price();
@@ -102,7 +102,7 @@ public class ImplProductDAO implements IProductDAO {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<Price> requestBody = new HttpEntity<>(price);
         ResponseEntity<Price> result = restTemplate.postForEntity(url, requestBody, Price.class);
-      }
+      }*/
       return true;
     } catch (Exception ex) {
       return false;
@@ -113,9 +113,11 @@ public class ImplProductDAO implements IProductDAO {
     try {
       entityManager.remove(findByid(id));
       // delete all Price related to this id
+
+      /*
       final String url = "http://localhost:8085/price/deleteByProductId/" + id;
       RestTemplate restTemplate = new RestTemplate();
-      restTemplate.delete(url);
+      restTemplate.delete(url);*/
       return true;
     } catch (Exception ex) {
       return false;

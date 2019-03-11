@@ -1,10 +1,14 @@
 package myapplication.service.service.impl;
 
+import com.khoi.proto.CreateRequest;
+import com.khoi.proto.CreateResponse;
+import com.khoi.proto.DeleteRequest;
+import com.khoi.proto.DeleteResponse;
 import com.khoi.proto.GetPriceHistoryRequest;
+import com.khoi.proto.GetPriceRequest;
+import com.khoi.proto.GetPriceResponse;
 import com.khoi.proto.PriceEntry;
 import com.khoi.proto.PriceServiceGrpc;
-import io.grpc.Channel;
-import io.grpc.ManagedChannelBuilder;
 import java.util.Iterator;
 import java.util.List;
 import myapplication.dao.IProductDAO;
@@ -16,13 +20,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductServiceImpl implements IProductService {
 
-  //private final PriceServiceGrpc.PriceServiceBlockingStub priceService;
+  private final PriceServiceGrpc.PriceServiceBlockingStub priceService;
   @Autowired
   private IProductDAO productDAO;
 
- /*public ProductServiceImpl(PriceServiceGrpc.PriceServiceBlockingStub priceService) {
+  public ProductServiceImpl(PriceServiceGrpc.PriceServiceBlockingStub priceService) {
     this.priceService = priceService;
-  }*/
+  }
 
   private static <T> Iterable<T> toIterable(final Iterator<T> iterator) {
     return new Iterable<T>() {
@@ -42,20 +46,32 @@ public class ProductServiceImpl implements IProductService {
   public Product findByid(int id) {
     Product prod = productDAO.findByid(id);
 
-    //config gRPC
-    //String priceServiceEndpoint = "localhost:6565";
-    Channel channel = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext().build();
-    PriceServiceGrpc.PriceServiceBlockingStub priceService = PriceServiceGrpc.newBlockingStub(channel);
     Iterable<PriceEntry> entries = toIterable(priceService.getPriceHistory(
         GetPriceHistoryRequest.newBuilder().setProductId(id).build()));
-    System.out.println(entries);
+    for (PriceEntry entry : entries
+    ) {
+      System.out.println(entry.getPrice());
+    }
+
+    GetPriceResponse rs = priceService
+        .getPrice(GetPriceRequest.newBuilder().setProductId(id).build());
+    prod.setPrice(rs.getPrice());
     return prod;
   }
 
   @Override
   public Boolean create(Product product) {
     if (productDAO.create(product)) {
-      return true;
+
+      //create new price
+      CreateResponse rs = priceService.create(
+          CreateRequest.newBuilder().setPrice(product.getPrice()).setProductId(product.getId())
+              .build());
+      if (rs.getId() > 0) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
@@ -63,8 +79,21 @@ public class ProductServiceImpl implements IProductService {
 
   @Override
   public Boolean update(Product product) {
-    if (productDAO.update(product)) {
-      return true;
+    Product prod_old = findByid(product.getId());
+
+    if (prod_old.getPrice() != product.getPrice()) {
+      CreateResponse rs = priceService.create(
+          CreateRequest.newBuilder().setPrice(product.getPrice()).setProductId(product.getId())
+              .build());
+      if (rs.getId() >= 0) {
+        if (productDAO.update(product)) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
@@ -73,6 +102,7 @@ public class ProductServiceImpl implements IProductService {
   @Override
   public Boolean delete(int id) {
     if (productDAO.delete(id)) {
+      DeleteResponse rs = priceService.delete(DeleteRequest.newBuilder().setProductId(id).build());
       return true;
     } else {
       return false;

@@ -1,6 +1,8 @@
 package myapplication.dto;
 
+import com.khoi.proto.PriceEntry;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,6 +45,9 @@ public class Product implements Serializable {
 
   @Transient
   private List<Price> priceHistory;
+
+  @Transient
+  private Iterator<PriceEntry> priceEntries;
 
   public int getId() {
     return id;
@@ -98,5 +103,13 @@ public class Product implements Serializable {
 
   public void setPriceHistory(List<Price> priceHistory) {
     this.priceHistory = priceHistory;
+  }
+
+  public Iterator<PriceEntry> getPriceEntries() {
+    return priceEntries;
+  }
+
+  public void setPriceEntries(Iterator<PriceEntry> priceEntries) {
+    this.priceEntries = priceEntries;
   }
 }

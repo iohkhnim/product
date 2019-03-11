@@ -20,13 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("product")
 public class ProductController {
 
-  private PriceServiceGrpc.PriceServiceBlockingStub priceService;
   @Autowired
   private IProductService productService;
-
-  public ProductController(PriceServiceGrpc.PriceServiceBlockingStub priceService) {
-    this.priceService = priceService;
-  }
 
   @GetMapping("findAll")
   public ResponseEntity<List<Product>> findAll() {
