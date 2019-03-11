@@ -1,58 +1,124 @@
 package myapplication.dao.dao.impl;
 
-import com.google.common.collect.Lists;
-import com.khoi.proto.PriceEntry;
-import com.khoi.proto.PriceServiceGrpc;
-import com.khoi.proto.getPriceHistoryRequest;
-import java.util.Iterator;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import myapplication.dao.IProductDAO;
+import myapplication.dto.Price;
 import myapplication.dto.Product;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 @Transactional
 @Repository
 public class ImplProductDAO implements IProductDAO {
 
-  private PriceServiceGrpc.PriceServiceBlockingStub priceService;
-
-  public ImplProductDAO(PriceServiceGrpc.PriceServiceBlockingStub priceService) {
-    this.priceService = priceService;
-  }
-
-  private static <T> Iterable<T> toIterable(final Iterator<T> iterator) {
-    return new Iterable<T>() {
-      @Override
-      public Iterator<T> iterator() {
-        return iterator;
-      }
-    };
-  }
+  @PersistenceContext
+  private EntityManager entityManager;
 
   @SuppressWarnings("unchecked")
   public List<Product> findAll() {
-    Iterable<PriceEntry> rs = toIterable(priceService
-        .getPriceHistory(getPriceHistoryRequest.newBuilder().setProductId(1).build()));
-    for(PriceEntry entry : rs){
-      System.out.println(entry.getPrice());
+    String hql = "FROM Product as prod ORDER BY prod.id";
+    List<Product> list = (List<Product>) entityManager.createQuery(hql).getResultList();
+    RestTemplate restTemplate = new RestTemplate();
+    // get product price
+    String url = "http://localhost:8085/price/findProductPrice/";
+    ResponseEntity<String> response;
+    for (Product item : list) {
+      response = restTemplate.getForEntity(url + item.getId(), String.class);
+      item.setPrice(Integer.parseInt(response.getBody()));
     }
-    return null;
+    return list;
   }
 
   public Product findByid(int id) {
-    return null;
+    Product prod = entityManager.find(Product.class, id);
+    // retrieve price from Price API
+    RestTemplate restTemplate = new RestTemplate();
+    final String url = "http://localhost:8085/price/findProductPrice/";
+    ResponseEntity<String> response = restTemplate.getForEntity(url + id, String.class);
+    prod.setPrice(Integer.parseInt(response.getBody()));
+
+    // retrieve priceHistory
+    ResponseEntity<List<Price>> response2 =
+        restTemplate.exchange(
+            "http://localhost:8085/price/findProductPriceHistory/" + id,
+            HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<List<Price>>() {});
+    List<Price> list = response2.getBody();
+
+    return prod;
   }
 
   public Boolean create(Product product) {
-    return null;
+    try {
+      product.setCreatedTime(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
+      product.setUpdatedTime(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
+
+      // create new Product
+      entityManager.persist(product);
+
+      // create new Price
+      final String url = "http://localhost:8085/price/create";
+      Price price = new Price();
+      price.setPrice(product.getPrice());
+      price.setProduct_id(product.getId());
+      RestTemplate restTemplate = new RestTemplate();
+      HttpEntity<Price> requestBody = new HttpEntity<>(price);
+      ResponseEntity<Price> result = restTemplate.postForEntity(url, requestBody, Price.class);
+
+      return true;
+    } catch (Exception ex) {
+      return false;
+    }
   }
 
   public Boolean update(Product product) {
-    return null;
+    try {
+      int flag = 0; // mark if price is changed
+      Product prod = findByid(product.getId());
+      prod.setName(product.getName());
+      prod.setSupplier(product.getSupplier());
+      if (prod.getPrice() != product.getPrice()) {
+        prod.setPrice(product.getPrice());
+        flag = 1;
+      }
+      prod.setUpdatedTime(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
+      entityManager.flush();
+      // create new Price
+      if (flag == 1) {
+        final String url = "http://localhost:8085/price/create";
+        Price price = new Price();
+        price.setProduct_id(prod.getId());
+        price.setPrice(prod.getPrice());
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<Price> requestBody = new HttpEntity<>(price);
+        ResponseEntity<Price> result = restTemplate.postForEntity(url, requestBody, Price.class);
+      }
+      return true;
+    } catch (Exception ex) {
+      return false;
+    }
   }
 
   public Boolean delete(int id) {
-    return null;
+    try {
+      entityManager.remove(findByid(id));
+      // delete all Price related to this id
+      final String url = "http://localhost:8085/price/deleteByProductId/" + id;
+      RestTemplate restTemplate = new RestTemplate();
+      restTemplate.delete(url);
+      return true;
+    } catch (Exception ex) {
+      return false;
+    }
   }
 }
