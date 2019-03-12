@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Transactional
 @Repository
-public class ImplProductDAO implements IProductDAO {
+public class ProductDAOImpl implements IProductDAO {
 
   @PersistenceContext
   private EntityManager entityManager;
@@ -85,7 +85,7 @@ public class ImplProductDAO implements IProductDAO {
     try {
       Product prod = findByid(product.getId());
       prod.setName(product.getName());
-      prod.setSupplier(product.getSupplier());
+      prod.setDescription(product.getDescription());
       if (prod.getPrice() != product.getPrice()) {
         prod.setPrice(product.getPrice());
       }

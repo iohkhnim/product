@@ -27,8 +27,8 @@ public class Product implements Serializable {
   @Column(name = "name")
   private String name;
 
-  @Column(name = "supplier")
-  private String supplier;
+  @Column(name = "description")
+  private String description;
 
   @Column(name = "createdtime", columnDefinition="DATETIME")
   @Nullable
@@ -65,12 +65,12 @@ public class Product implements Serializable {
     this.name = name;
   }
 
-  public String getSupplier() {
-    return supplier;
+  public String getDescription() {
+    return description;
   }
 
-  public void setSupplier(String supplier) {
-    this.supplier = supplier;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public java.util.Date getCreatedTime() {
