@@ -62,7 +62,11 @@
       <artifactId>realproto</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
-
+    <dependency>
+      <groupId>com.khoi</groupId>
+      <artifactId>stockproto</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java-util</artifactId>

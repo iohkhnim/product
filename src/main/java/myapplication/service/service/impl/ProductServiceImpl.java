@@ -10,27 +10,36 @@ import com.khoi.proto.GetPriceRequest;
 import com.khoi.proto.GetPriceResponse;
 import com.khoi.proto.PriceEntry;
 import com.khoi.proto.PriceServiceGrpc;
+import com.khoi.stockproto.GetStockRequest;
+import com.khoi.stockproto.GetStockResponse;
+import com.khoi.stockproto.StockServiceGrpc;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import myapplication.dao.IProductDAO;
 import myapplication.dto.Product;
 import myapplication.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductServiceImpl implements IProductService {
 
+  @Qualifier("priceService")
   private final PriceServiceGrpc.PriceServiceBlockingStub priceService;
+
+  @Qualifier("stockService")
+  private final StockServiceGrpc.StockServiceBlockingStub stockService;
+
   @Autowired
   private IProductDAO productDAO;
 
-  public ProductServiceImpl(PriceServiceGrpc.PriceServiceBlockingStub priceService) {
+  public ProductServiceImpl(PriceServiceGrpc.PriceServiceBlockingStub priceService,
+      StockServiceGrpc.StockServiceBlockingStub stockService) {
     this.priceService = priceService;
+    this.stockService = stockService;
   }
 
   private static <E> Collection<E> makeCollection(Iterable<E> iter) {
@@ -55,7 +64,7 @@ public class ProductServiceImpl implements IProductService {
     //return productDAO.findAll();
     List<Product> list = productDAO.findAll();
     for (Product prod : list) {
-        //get price
+      //get price
       prod = findByid(prod.getId());
     }
     return list;
@@ -88,6 +97,12 @@ public class ProductServiceImpl implements IProductService {
     GetPriceResponse rs = priceService
         .getPrice(GetPriceRequest.newBuilder().setProductId(id).build());
     prod.setPrice(rs.getPrice());
+
+    //get stock
+    GetStockResponse rs2 = stockService
+        .getStock(GetStockRequest.newBuilder().setProductId(id).build());
+    prod.setStock(rs2.getStock());
+
     return prod;
   }
 
@@ -99,6 +114,10 @@ public class ProductServiceImpl implements IProductService {
       CreateResponse rs = priceService.create(
           CreateRequest.newBuilder().setPrice(product.getPrice()).setProductId(product.getId())
               .build());
+
+      //create new stock
+
+
       if (rs.getId() > 0) {
         return true;
       } else {
