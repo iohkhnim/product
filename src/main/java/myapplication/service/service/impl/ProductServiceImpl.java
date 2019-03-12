@@ -114,10 +114,6 @@ public class ProductServiceImpl implements IProductService {
       CreateResponse rs = priceService.create(
           CreateRequest.newBuilder().setPrice(product.getPrice()).setProductId(product.getId())
               .build());
-
-      //create new stock
-
-
       if (rs.getId() > 0) {
         return true;
       } else {

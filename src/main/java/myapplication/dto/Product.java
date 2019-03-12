@@ -1,8 +1,6 @@
 package myapplication.dto;
 
-import com.khoi.proto.PriceEntry;
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,12 +28,12 @@ public class Product implements Serializable {
   @Column(name = "description")
   private String description;
 
-  @Column(name = "createdtime", columnDefinition="DATETIME")
+  @Column(name = "createdtime", columnDefinition = "DATETIME")
   @Nullable
   @Temporal(TemporalType.TIMESTAMP)
   private java.util.Date createdTime;
 
-  @Column(name = "updatedtime", columnDefinition="DATETIME")
+  @Column(name = "updatedtime", columnDefinition = "DATETIME")
   @Nullable
   @Temporal(TemporalType.TIMESTAMP)
   private java.util.Date updatedTime;

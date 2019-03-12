@@ -30,8 +30,8 @@ public class ApplicationConfig {
     return PriceServiceGrpc.newBlockingStub(priceChannel);
   }
 
- @Bean(name = "stockService")
- @Qualifier("stockChannel")
+  @Bean(name = "stockService")
+  @Qualifier("stockChannel")
   StockServiceGrpc.StockServiceBlockingStub stockService(Channel stockChannel) {
     return StockServiceGrpc.newBlockingStub(stockChannel);
   }
