@@ -1,5 +1,6 @@
 package myapplication.service.service.impl;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.googlecode.protobuf.format.JsonFormat;
 import com.khoi.proto.CreateRequest;
 import com.khoi.proto.CreateResponse;
@@ -13,6 +14,9 @@ import com.khoi.proto.PriceServiceGrpc;
 import com.khoi.stockproto.GetStockRequest;
 import com.khoi.stockproto.GetStockResponse;
 import com.khoi.stockproto.StockServiceGrpc;
+import com.khoi.supplierproto.GetSupplierListRequest;
+import com.khoi.supplierproto.SupplierEntry;
+import com.khoi.supplierproto.SupplierServiceGrpc;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -33,13 +37,18 @@ public class ProductServiceImpl implements IProductService {
   @Qualifier("stockService")
   private final StockServiceGrpc.StockServiceBlockingStub stockService;
 
+  @Qualifier("supplierService")
+  private final SupplierServiceGrpc.SupplierServiceBlockingStub supplierService;
+
   @Autowired
   private IProductDAO productDAO;
 
   public ProductServiceImpl(PriceServiceGrpc.PriceServiceBlockingStub priceService,
-      StockServiceGrpc.StockServiceBlockingStub stockService) {
+      StockServiceGrpc.StockServiceBlockingStub stockService,
+      SupplierServiceGrpc.SupplierServiceBlockingStub supplierService) {
     this.priceService = priceService;
     this.stockService = stockService;
+    this.supplierService = supplierService;
   }
 
   private static <E> Collection<E> makeCollection(Iterable<E> iter) {
@@ -73,36 +82,63 @@ public class ProductServiceImpl implements IProductService {
   @Override
   public Product findByid(int id) {
     Product prod = productDAO.findByid(id);
+    try {
+      //get PriceHistory
+      Iterable<PriceEntry> entries = toIterable(priceService.getPriceHistory(
+          GetPriceHistoryRequest.newBuilder().setProductId(id).build()));
 
-    Iterable<PriceEntry> entries = toIterable(priceService.getPriceHistory(
-        GetPriceHistoryRequest.newBuilder().setProductId(id).build()));
+      List<PriceEntry> list1 = new ArrayList<>();
+      entries.forEach(list1::add);
 
-    List<PriceEntry> list1 = new ArrayList<>();
-    entries.forEach(list1::add);
-
-    //cach ta dao
+      //cach ta dao
     /*List<String> strings = list1.stream()
         .map(object -> Objects.toString(object, null))
         .collect(Collectors.toList());*/
 
-    List<String> strings = new ArrayList<>();
+      List<String> strings = new ArrayList<>();
 
-    //cach khong ta dao
-    for (PriceEntry price : list1) {
-      strings.add(new JsonFormat().printToString(price));
+      //cach khong ta dao?
+      for (PriceEntry price : list1) {
+        strings.add(new JsonFormat().printToString(price));
+      }
+
+      prod.setPriceEntries(strings);
+
+      GetPriceResponse rs = priceService
+          .getPrice(GetPriceRequest.newBuilder().setProductId(id).build());
+      prod.setPrice(rs.getPrice());
+    } catch (Exception ex) {
+      System.out.println(ex);
+      prod.setPriceEntries(null);
+      prod.setPrice(-1);
     }
+    try {
+      //get stock
+      GetStockResponse rs2 = stockService
+          .getStock(GetStockRequest.newBuilder().setProductId(id).build());
+      prod.setStock(rs2.getStock());
+    } catch (Exception ex) {
+      prod.setStock(-1);
+    }
+    try {
+      //get list of suppliers selling this product
+      List<SupplierEntry> supplierEntryList = new ArrayList<>();
+      List<String> supplierList = new ArrayList<>();//result of list<entry> -> list<String>
+      //get result from gRPC server
+      Iterable<SupplierEntry> supplierEntryIterable = toIterable(
+          supplierService.getSupplierListByProductId(
+              GetSupplierListRequest.newBuilder().setProductId(id).build()));
+      //convert Iterable -> list<Entry>
+      supplierEntryIterable.forEach(supplierEntryList::add);
+      //convert list<entry> -> list<String>
+      for (SupplierEntry supplierEntry : supplierEntryList) {
+        supplierList.add(new JsonFormat().printToString(supplierEntry));
+      }
 
-    prod.setPriceEntries(strings);
-
-    GetPriceResponse rs = priceService
-        .getPrice(GetPriceRequest.newBuilder().setProductId(id).build());
-    prod.setPrice(rs.getPrice());
-
-    //get stock
-    GetStockResponse rs2 = stockService
-        .getStock(GetStockRequest.newBuilder().setProductId(id).build());
-    prod.setStock(rs2.getStock());
-
+      prod.setSupplierEntries(supplierList);
+    } catch (Exception ex) {
+      prod.setSupplierEntries(null);
+    }
     return prod;
   }
 

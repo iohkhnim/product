@@ -16,13 +16,13 @@ public class ProductServiceGrpcImpl extends ProductServiceGrpc.ProductServiceImp
   private IProductDAO productDAO;
 
   @Override
-  public void getProduct(GetProductRequest request, StreamObserver<ProductEntry> resonseObserver) {
+  public void getProduct(GetProductRequest request, StreamObserver<ProductEntry> responseObserver) {
     Product product = productDAO.findByid(request.getProductId());
-    resonseObserver.onNext(
+    responseObserver.onNext(
         ProductEntry.newBuilder().setId(product.getId()).setName(product.getName())
             .setDescription(product.getDescription())
             .setCreatedTime(product.getCreatedTime().getTime())
             .setUpdatedTime(product.getUpdatedTime().getTime()).build());
-    resonseObserver.onCompleted();
+    responseObserver.onCompleted();
   }
 }
