@@ -1,6 +1,5 @@
 package myapplication.service.service.impl;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import com.googlecode.protobuf.format.JsonFormat;
 import com.khoi.proto.CreateRequest;
 import com.khoi.proto.CreateResponse;
@@ -18,9 +17,9 @@ import com.khoi.supplierproto.GetSupplierListRequest;
 import com.khoi.supplierproto.SupplierEntry;
 import com.khoi.supplierproto.SupplierServiceGrpc;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 import myapplication.dao.IProductDAO;
 import myapplication.dto.Product;
 import myapplication.service.IProductService;
@@ -51,14 +50,6 @@ public class ProductServiceImpl implements IProductService {
     this.supplierService = supplierService;
   }
 
-  private static <E> Collection<E> makeCollection(Iterable<E> iter) {
-    Collection<E> list = new ArrayList<E>();
-    for (E item : iter) {
-      list.add(item);
-    }
-    return list;
-  }
-
   private static <T> Iterable<T> toIterable(final Iterator<T> iterator) {
     return new Iterable<T>() {
       @Override
@@ -72,10 +63,7 @@ public class ProductServiceImpl implements IProductService {
   public List<Product> findAll() {
     //return productDAO.findAll();
     List<Product> list = productDAO.findAll();
-    for (Product prod : list) {
-      //get price
-      prod = findByid(prod.getId());
-    }
+    list.stream().forEach(p -> findByid(p.getId()));
     return list;
   }
 
@@ -95,12 +83,12 @@ public class ProductServiceImpl implements IProductService {
         .map(object -> Objects.toString(object, null))
         .collect(Collectors.toList());*/
 
-      List<String> strings = new ArrayList<>();
-
       //cach khong ta dao?
-      for (PriceEntry price : list1) {
+      /*for (PriceEntry price : list1) {
         strings.add(new JsonFormat().printToString(price));
-      }
+      }*/
+      List<String> strings = list1.stream().map(p -> new JsonFormat().printToString(p))
+          .collect(Collectors.toList());
 
       prod.setPriceEntries(strings);
 
@@ -123,17 +111,17 @@ public class ProductServiceImpl implements IProductService {
     try {
       //get list of suppliers selling this product
       List<SupplierEntry> supplierEntryList = new ArrayList<>();
-      List<String> supplierList = new ArrayList<>();//result of list<entry> -> list<String>
       //get result from gRPC server
       Iterable<SupplierEntry> supplierEntryIterable = toIterable(
           supplierService.getSupplierListByProductId(
               GetSupplierListRequest.newBuilder().setProductId(id).build()));
       //convert Iterable -> list<Entry>
       supplierEntryIterable.forEach(supplierEntryList::add);
+
       //convert list<entry> -> list<String>
-      for (SupplierEntry supplierEntry : supplierEntryList) {
-        supplierList.add(new JsonFormat().printToString(supplierEntry));
-      }
+      //result of list<entry> -> list<String>
+      List<String> supplierList = supplierEntryList.stream().map(s -> new JsonFormat().printToString(s))
+          .collect(Collectors.toList());
 
       prod.setSupplierEntries(supplierList);
     } catch (Exception ex) {
@@ -150,11 +138,7 @@ public class ProductServiceImpl implements IProductService {
       CreateResponse rs = priceService.create(
           CreateRequest.newBuilder().setPrice(product.getPrice()).setProductId(product.getId())
               .build());
-      if (rs.getId() > 0) {
-        return true;
-      } else {
-        return false;
-      }
+      return rs.getId() > 0;
     } else {
       return false;
     }
@@ -169,11 +153,7 @@ public class ProductServiceImpl implements IProductService {
           CreateRequest.newBuilder().setPrice(product.getPrice()).setProductId(product.getId())
               .build());
       if (rs.getId() >= 0) {
-        if (productDAO.update(product)) {
-          return true;
-        } else {
-          return false;
-        }
+        return productDAO.update(product);
       } else {
         return false;
       }

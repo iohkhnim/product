@@ -59,16 +59,6 @@ public class ProductDAOImpl implements IProductDAO {
 
       // create new Product
       entityManager.persist(product);
-
-      // create new Price
-      /*final String url = "http://localhost:8085/price/create";
-      Price price = new Price();
-      price.setPrice(product.getPrice());
-      price.setProduct_id(product.getId());
-      RestTemplate restTemplate = new RestTemplate();
-      HttpEntity<Price> requestBody = new HttpEntity<>(price);
-      ResponseEntity<Price> result = restTemplate.postForEntity(url, requestBody, Price.class);*/
-
       return true;
     } catch (Exception ex) {
       return false;
@@ -85,18 +75,6 @@ public class ProductDAOImpl implements IProductDAO {
       }
       prod.setUpdatedTime(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
       entityManager.flush();
-      // create new Price
-
-      /*
-      if (flag == 1) {
-        final String url = "http://localhost:8085/price/create";
-        Price price = new Price();
-        price.setProduct_id(prod.getId());
-        price.setPrice(prod.getPrice());
-        RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<Price> requestBody = new HttpEntity<>(price);
-        ResponseEntity<Price> result = restTemplate.postForEntity(url, requestBody, Price.class);
-      }*/
       return true;
     } catch (Exception ex) {
       return false;
@@ -106,12 +84,6 @@ public class ProductDAOImpl implements IProductDAO {
   public Boolean delete(int id) {
     try {
       entityManager.remove(findByid(id));
-      // delete all Price related to this id
-
-      /*
-      final String url = "http://localhost:8085/price/deleteByProductId/" + id;
-      RestTemplate restTemplate = new RestTemplate();
-      restTemplate.delete(url);*/
       return true;
     } catch (Exception ex) {
       return false;
