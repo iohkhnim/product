@@ -1,4 +1,4 @@
-package myapplication.controller;
+package myapplication;
 
 import com.khoi.proto.PriceServiceGrpc;
 import com.khoi.stockproto.StockServiceGrpc;
