@@ -93,7 +93,7 @@ public class ProductDAOImpl implements IProductDAO {
 
   @Override
   public String getProductNameById(int product_id) {
-    String hql = "SELECT p.name FROM Product p WHERE p.product_id = :prodid";
+    String hql = "SELECT p.name FROM Product p WHERE p.id = :prodid";
     Query query = entityManager.createQuery(hql);
     query.setParameter("prodid", product_id);
     return query.getSingleResult().toString();
