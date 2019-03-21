@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.TimeZone;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import myapplication.dao.IProductDAO;
 import myapplication.dto.Product;
 import org.springframework.stereotype.Repository;
@@ -88,5 +89,13 @@ public class ProductDAOImpl implements IProductDAO {
     } catch (Exception ex) {
       return false;
     }
+  }
+
+  @Override
+  public String getProductNameById(int product_id) {
+    String hql = "SELECT p.name FROM Product p WHERE p.product_id = :prodid";
+    Query query = entityManager.createQuery(hql);
+    query.setParameter("prodid", product_id);
+    return query.getSingleResult().toString();
   }
 }
