@@ -20,11 +20,21 @@ public class ProductServiceGrpcImpl extends ProductServiceGrpc.ProductServiceImp
   @Autowired
   private IProductDAO productDAO;
 
+  /**
+   * <p>This method converts date in Date type to date in String type</p>
+   * @param date date in Date type
+   * @return date in String type
+   */
   private String convertDate2String(Date date) {
     DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     return dateFormat.format(date);
   }
 
+  /**
+   * <p>This method receives a request from gRPC client then return product information to gRPC client</p>
+   * @param request Contains product ID needs to be retrieved information
+   * @param responseObserver Contains product information in ProductEntry type
+   */
   @Override
   public void getProduct(GetProductRequest request, StreamObserver<ProductEntry> responseObserver) {
     Product product = productDAO.findByid(request.getProductId());
@@ -36,6 +46,11 @@ public class ProductServiceGrpcImpl extends ProductServiceGrpc.ProductServiceImp
     responseObserver.onCompleted();
   }
 
+  /**
+   *  <p>This method receives a request from gRPC client then return product name to gRPC client</p>
+   * @param request Contains product ID needs to be retrieved its name
+   * @param streamObserver Contains product name
+   */
   @Override
   public void getProductNameById(GetProductNameByIdRequest request,
       StreamObserver<GetProductNameByIdResponse> streamObserver) {

@@ -1,0 +1,7 @@
+myapplication
+myapplication.controller
+myapplication.dao
+myapplication.dao.dao.impl
+myapplication.dto
+myapplication.service
+myapplication.service.service.impl

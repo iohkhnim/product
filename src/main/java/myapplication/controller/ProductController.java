@@ -1,6 +1,5 @@
 package myapplication.controller;
 
-import com.khoi.proto.PriceServiceGrpc;
 import java.util.List;
 import myapplication.dto.Product;
 import myapplication.service.IProductService;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("product")
@@ -24,45 +22,69 @@ public class ProductController {
   @Autowired
   private IProductService productService;
 
+  /**
+   * <p>An API endpoint (/product/findAll) with method GET gets information of all Products </p>
+   * @return Return all products information
+   */
   @GetMapping("findAll")
   public ResponseEntity<List<Product>> findAll() {
     List<Product> list = productService.findAll();
-    return new ResponseEntity<List<Product>>(list, HttpStatus.OK);
+    return new ResponseEntity<>(list, HttpStatus.OK);
   }
 
+  /**
+   * <p>An API endpoint (/product/{id}) with method GET gets information of given Product ID</p>
+   * @param id Product ID
+   * @return Return information of given Product ID
+   */
   @GetMapping("{id}")
   public ResponseEntity<Product> findByid(@PathVariable("id") int id) {
     Product obj = productService.findByid(id);
-    return new ResponseEntity<Product>(obj, HttpStatus.OK);
+    return new ResponseEntity<>(obj, HttpStatus.OK);
   }
 
+  /**
+   * <p>An API endpoint (/product/create) with method POST creates a product</p>
+   * @param product Product information
+   * @return Https status according to result
+   */
   @PostMapping("create")
   public ResponseEntity<Void> create(@RequestBody Product product) {
     Boolean flag = productService.create(product);
     if (flag.equals(true)) {
-      return new ResponseEntity<Void>(HttpStatus.CREATED);
+      return new ResponseEntity<>(HttpStatus.CREATED);
     } else {
-      return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+      return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
   }
 
+  /**
+   * <p>An API endpoint (/product/update) with method PUT updates a product</p>
+   * @param product product information
+   * @return Https status according to result
+   */
   @PutMapping("update")
   public ResponseEntity<Void> update(@RequestBody Product product) {
     Boolean flag = productService.update(product);
     if (flag.equals(true)) {
-      return new ResponseEntity<Void>(HttpStatus.OK);
+      return new ResponseEntity<>(HttpStatus.OK);
     } else {
-      return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+      return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
   }
 
+  /**
+   * <p>An API endpoint (/product/delete/{id}) with method DELETE deletes a product </p>
+   * @param id Product ID needs to be deleted
+   * @return Return Http status according to result
+   */
   @DeleteMapping("delete/{id}")
   public ResponseEntity<Void> delete(@PathVariable("id") int id) {
     Boolean flag = productService.delete(id);
     if (flag.equals(true)) {
-      return new ResponseEntity<Void>(HttpStatus.OK);
+      return new ResponseEntity<>(HttpStatus.OK);
     } else {
-      return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+      return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
   }
 }

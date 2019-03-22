@@ -50,6 +50,13 @@ public class ProductServiceImpl implements IProductService {
     this.supplierService = supplierService;
   }
 
+  /**
+   * <p>This method converts Iterator to Iterable</p>
+   *
+   * @param iterator Iterator object
+   * @param <T> Type of Iterator object
+   * @return Iterable object has the same type of provided Iterator object
+   */
   private static <T> Iterable<T> toIterable(final Iterator<T> iterator) {
     return new Iterable<T>() {
       @Override
@@ -59,14 +66,26 @@ public class ProductServiceImpl implements IProductService {
     };
   }
 
+  /**
+   * <p>This method gets all products information</p>
+   *
+   * @return List of Product type
+   */
   @Override
   public List<Product> findAll() {
-    //return productDAO.findAll();
     List<Product> list = productDAO.findAll();
     list.stream().forEach(p -> findByid(p.getId()));
     return list;
   }
 
+  /**
+   * <p>This method get a product information, price, price history from gRPC price server, stock
+   * information from gRPC stock server, list of supplier supply this product from gRPC supplier
+   * server</p>
+   *
+   * @param id Product id needs to be retrieved information
+   * @return Return a Product object
+   */
   @Override
   public Product findByid(int id) {
     Product prod = productDAO.findByid(id);
@@ -84,9 +103,6 @@ public class ProductServiceImpl implements IProductService {
         .collect(Collectors.toList());*/
 
       //cach khong ta dao?
-      /*for (PriceEntry price : list1) {
-        strings.add(new JsonFormat().printToString(price));
-      }*/
       List<String> strings = list1.stream().map(p -> new JsonFormat().printToString(p))
           .collect(Collectors.toList());
 
@@ -120,7 +136,8 @@ public class ProductServiceImpl implements IProductService {
 
       //convert list<entry> -> list<String>
       //result of list<entry> -> list<String>
-      List<String> supplierList = supplierEntryList.stream().map(s -> new JsonFormat().printToString(s))
+      List<String> supplierList = supplierEntryList.stream()
+          .map(s -> new JsonFormat().printToString(s))
           .collect(Collectors.toList());
 
       prod.setSupplierEntries(supplierList);
@@ -130,6 +147,12 @@ public class ProductServiceImpl implements IProductService {
     return prod;
   }
 
+  /**
+   * <p>This method passes value to DAO in order to insert into database with given information</p>
+   *
+   * @param product Product object contains information
+   * @return Return a boolean value according to result
+   */
   @Override
   public Boolean create(Product product) {
     if (productDAO.create(product)) {
@@ -144,6 +167,12 @@ public class ProductServiceImpl implements IProductService {
     }
   }
 
+  /**
+   * <p>This method passes value to DAO in order to update a product in database</p>
+   *
+   * @param product Product object contains information
+   * @return Return a boolean value according to result
+   */
   @Override
   public Boolean update(Product product) {
     Product prod_old = findByid(product.getId());
@@ -162,6 +191,13 @@ public class ProductServiceImpl implements IProductService {
     }
   }
 
+  /**
+   * <p>This method passes value to DAO in order to delete a product in database
+   * with given product ID</p>
+   *
+   * @param id Product ID needs to be deleted
+   * @return Return a boolean value according to result
+   */
   @Override
   public Boolean delete(int id) {
     if (productDAO.delete(id)) {

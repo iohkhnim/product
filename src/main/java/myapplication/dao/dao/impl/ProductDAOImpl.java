@@ -18,41 +18,34 @@ public class ProductDAOImpl implements IProductDAO {
   @PersistenceContext
   private EntityManager entityManager;
 
-  @SuppressWarnings("unchecked")
+  /**
+   * <p>This method gets all products from database</p>
+   * @return List of Product objects
+   */
+  @Override
   public List<Product> findAll() {
     String hql = "FROM Product as prod ORDER BY prod.id";
     List<Product> list = (List<Product>) entityManager.createQuery(hql).getResultList();
-   /* RestTemplate restTemplate = new RestTemplate();
-    // get product price
-    String url = "http://localhost:8085/price/findProductPrice/";
-    ResponseEntity<String> response;
-    for (Product item : list) {
-      response = restTemplate.getForEntity(url + item.getId(), String.class);
-      item.setPrice(Integer.parseInt(response.getBody()));
-    }*/
     return list;
   }
 
+  /**
+   * <p>This method get a product information</p>
+   * @param id Product id needs to be retrieved information
+   * @return Return a Product object
+   */
+  @Override
   public Product findByid(int id) {
     Product prod = entityManager.find(Product.class, id);
-    // retrieve price from Price API
-    /*RestTemplate restTemplate = new RestTemplate();
-    final String url = "http://localhost:8085/price/findProductPrice/";
-    ResponseEntity<String> response = restTemplate.getForEntity(url + id, String.class);
-    prod.setPrice(Integer.parseInt(response.getBody()));*/
-    /*
-    // retrieve priceHistory
-    ResponseEntity<List<Price>> response2 =
-        restTemplate.exchange(
-            "http://localhost:8085/price/findProductPriceHistory/" + id,
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<List<Price>>() {});
-    List<Price> list = response2.getBody();
-    */
     return prod;
   }
 
+  /**
+   * <p>This method inserts into database with given information</p>
+   * @param product Product object contains information
+   * @return Return a boolean value according to result
+   */
+  @Override
   public Boolean create(Product product) {
     try {
       product.setCreatedTime(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
@@ -66,6 +59,12 @@ public class ProductDAOImpl implements IProductDAO {
     }
   }
 
+  /**
+   * <p>This method update a product in database</p>
+   * @param product Product object contains information
+   * @return Return a boolean value according to result
+   */
+  @Override
   public Boolean update(Product product) {
     try {
       Product prod = findByid(product.getId());
@@ -82,6 +81,12 @@ public class ProductDAOImpl implements IProductDAO {
     }
   }
 
+  /**
+   * <p>This method deletes a product in database with given product ID</p>
+   * @param id Product ID needs to be deleted
+   * @return Return a boolean value according to result
+   */
+  @Override
   public Boolean delete(int id) {
     try {
       entityManager.remove(findByid(id));
@@ -91,6 +96,11 @@ public class ProductDAOImpl implements IProductDAO {
     }
   }
 
+  /**
+   * <p>This method retrieves product name from database with given product ID</p>
+   * @param product_id Product ID needs to be get its name
+   * @return Return product name of given product ID
+   */
   @Override
   public String getProductNameById(int product_id) {
     String hql = "SELECT p.name FROM Product p WHERE p.id = :prodid";
