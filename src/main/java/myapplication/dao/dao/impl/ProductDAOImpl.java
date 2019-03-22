@@ -20,6 +20,7 @@ public class ProductDAOImpl implements IProductDAO {
 
   /**
    * <p>This method gets all products from database</p>
+   *
    * @return List of Product objects
    */
   @Override
@@ -31,6 +32,7 @@ public class ProductDAOImpl implements IProductDAO {
 
   /**
    * <p>This method get a product information</p>
+   *
    * @param id Product id needs to be retrieved information
    * @return Return a Product object
    */
@@ -42,6 +44,7 @@ public class ProductDAOImpl implements IProductDAO {
 
   /**
    * <p>This method inserts into database with given information</p>
+   *
    * @param product Product object contains information
    * @return Return a boolean value according to result
    */
@@ -61,6 +64,7 @@ public class ProductDAOImpl implements IProductDAO {
 
   /**
    * <p>This method update a product in database</p>
+   *
    * @param product Product object contains information
    * @return Return a boolean value according to result
    */
@@ -83,6 +87,7 @@ public class ProductDAOImpl implements IProductDAO {
 
   /**
    * <p>This method deletes a product in database with given product ID</p>
+   *
    * @param id Product ID needs to be deleted
    * @return Return a boolean value according to result
    */
@@ -98,6 +103,7 @@ public class ProductDAOImpl implements IProductDAO {
 
   /**
    * <p>This method retrieves product name from database with given product ID</p>
+   *
    * @param product_id Product ID needs to be get its name
    * @return Return product name of given product ID
    */

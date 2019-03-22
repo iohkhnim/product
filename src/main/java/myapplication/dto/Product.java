@@ -47,9 +47,6 @@ public class Product implements Serializable {
   @Transient
   private List<String> supplierEntries;
 
-  /*@Transient
-  private List<Price> priceHistory;*/
-
   @Transient
   private List<String> priceEntries;
 
@@ -100,14 +97,6 @@ public class Product implements Serializable {
   public void setPrice(int price) {
     this.price = price;
   }
-
-  /*public List<Price> getPriceHistory() {
-    return priceHistory;
-  }
-
-  public void setPriceHistory(List<Price> priceHistory) {
-    this.priceHistory = priceHistory;
-  }*/
 
   public List<String> getPriceEntries() {
     return priceEntries;
