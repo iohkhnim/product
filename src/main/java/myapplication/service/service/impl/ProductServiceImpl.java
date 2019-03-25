@@ -30,11 +30,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductServiceImpl implements IProductService {
 
-  @Qualifier("priceService")
-  private final PriceServiceGrpc.PriceServiceBlockingStub priceService;
-
   @Qualifier("stockService")
   private final StockServiceGrpc.StockServiceBlockingStub stockService;
+
+  @Qualifier("priceService")
+  private final PriceServiceGrpc.PriceServiceBlockingStub priceService;
 
   @Qualifier("supplierService")
   private final SupplierServiceGrpc.SupplierServiceBlockingStub supplierService;
@@ -189,5 +189,10 @@ public class ProductServiceImpl implements IProductService {
     } else {
       return false;
     }
+  }
+
+  @Override
+  public int test(int id) {
+    return stockService.getStock(GetStockRequest.newBuilder().setProductId(id).build()).getStock();
   }
 }

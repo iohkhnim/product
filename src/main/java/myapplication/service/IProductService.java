@@ -46,4 +46,6 @@ public interface IProductService {
    * @return Return a boolean value according to result
    */
   Boolean delete(int id);
+
+  int test(int id);
 }
