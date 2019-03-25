@@ -19,9 +19,7 @@ public class ProductDAOImpl implements IProductDAO {
   private EntityManager entityManager;
 
   /**
-   * <p>This method gets all products from database</p>
-   *
-   * @return List of Product objects
+   * {@inheritDoc}
    */
   @Override
   public List<Product> findAll() {
@@ -31,10 +29,7 @@ public class ProductDAOImpl implements IProductDAO {
   }
 
   /**
-   * <p>This method get a product information</p>
-   *
-   * @param id Product id needs to be retrieved information
-   * @return Return a Product object
+   * {@inheritDoc}
    */
   @Override
   public Product findByid(int id) {
@@ -43,10 +38,7 @@ public class ProductDAOImpl implements IProductDAO {
   }
 
   /**
-   * <p>This method inserts into database with given information</p>
-   *
-   * @param product Product object contains information
-   * @return Return a boolean value according to result
+   * {@inheritDoc}
    */
   @Override
   public Boolean create(Product product) {
@@ -63,10 +55,7 @@ public class ProductDAOImpl implements IProductDAO {
   }
 
   /**
-   * <p>This method update a product in database</p>
-   *
-   * @param product Product object contains information
-   * @return Return a boolean value according to result
+   * {@inheritDoc}
    */
   @Override
   public Boolean update(Product product) {
@@ -86,10 +75,7 @@ public class ProductDAOImpl implements IProductDAO {
   }
 
   /**
-   * <p>This method deletes a product in database with given product ID</p>
-   *
-   * @param id Product ID needs to be deleted
-   * @return Return a boolean value according to result
+   * {@inheritDoc}
    */
   @Override
   public Boolean delete(int id) {
@@ -102,10 +88,7 @@ public class ProductDAOImpl implements IProductDAO {
   }
 
   /**
-   * <p>This method retrieves product name from database with given product ID</p>
-   *
-   * @param product_id Product ID needs to be get its name
-   * @return Return product name of given product ID
+   * {@inheritDoc}
    */
   @Override
   public String getProductNameById(int product_id) {
