@@ -87,7 +87,12 @@
       <artifactId>productproto</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
-
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-tcnative-boringssl-static</artifactId>
+      <version>2.0.20.Final</version>
+      <scope>runtime</scope>
+    </dependency>
 
   </dependencies>
 
