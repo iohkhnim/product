@@ -23,9 +23,10 @@ public class ApplicationConfig {
   @Bean(name = "priceChannel")
   Channel priceChannel() throws Exception {
     return NettyChannelBuilder.forTarget(priceServiceEndpoint).negotiationType(NegotiationType.TLS)
-        .sslContext(GrpcSslContexts.forClient().trustManager(new File("D:\\product\\src\\main\\java\\myapplication\\auth\\ca.crt")).build())
+        .sslContext(GrpcSslContexts.forClient()
+            .trustManager(new File("D:\\product\\src\\main\\java\\myapplication\\key\\ca.crt"))
+            .build())
         .build();
-    //return ManagedChannelBuilder.forTarget(priceServiceEndpoint).usePlaintext().build();
   }
 
   @Bean(name = "stockChannel")
