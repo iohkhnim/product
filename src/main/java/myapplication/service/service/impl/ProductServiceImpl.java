@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class ProductServiceImpl implements IProductService {
 
@@ -49,6 +50,7 @@ public class ProductServiceImpl implements IProductService {
     this.stockService = stockService;
     this.supplierService = supplierService;
   }
+
 
   /**
    * <p>This method converts Iterator to Iterable</p>
@@ -81,6 +83,7 @@ public class ProductServiceImpl implements IProductService {
    */
   @Override
   public Product findByid(int id) {
+
     Product prod = productDAO.findByid(id);
     try {
       //get PriceHistory

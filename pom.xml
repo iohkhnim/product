@@ -93,6 +93,17 @@
       <version>2.0.20.Final</version>
       <scope>runtime</scope>
     </dependency>
+    <dependency>
+      <groupId>com.google.api-client</groupId>
+      <artifactId>google-api-client</artifactId>
+      <version>1.28.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.auth0</groupId>
+      <artifactId>java-jwt</artifactId>
+      <version>3.8.0</version>
+    </dependency>
+
 
   </dependencies>
 
