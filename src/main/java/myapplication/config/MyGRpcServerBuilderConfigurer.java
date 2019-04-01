@@ -1,4 +1,4 @@
-package myapplication;
+package myapplication.config;
 
 import io.grpc.ServerBuilder;
 import io.grpc.netty.GrpcSslContexts;
