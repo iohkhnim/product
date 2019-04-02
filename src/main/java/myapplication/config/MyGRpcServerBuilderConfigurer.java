@@ -13,8 +13,8 @@ import java.io.File;
 @Component
 public class MyGRpcServerBuilderConfigurer extends GRpcServerBuilderConfigurer {
 
-  private final String certChainFilePath = "src/main/java/myapplication/key/server.crt";
-  private final String privateKeyFilePath = "src/main/java/myapplication/key/server.pem";
+  private final String certChainFilePath = "key/server.crt";
+  private final String privateKeyFilePath = "key/server.pem";
 
   private SslContextBuilder getSslContextBuilder() throws Exception {
     SslContextBuilder sslContextBuilder =

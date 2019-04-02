@@ -9,6 +9,7 @@ import io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.NegotiationType;
 import io.grpc.netty.NettyChannelBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,13 +18,16 @@ import java.io.File;
 @Configuration
 public class ApplicationConfig {
 
-  private final String priceServiceEndpoint = "localhost:6565";
-  private final String stockServiceEndpoint = "localhost:6570";
-  private final String supplierServiceEndpoint = "localhost:6580";
 
-  private final String priceServerKeyPath = "src/main/java/myapplication/key/ca.crt";
-  private final String stockServerKeyPath = "src/main/java/myapplication/key/castock.crt";
-  private final String supplierServerKeyPath = "src/main/java/myapplication/key/ca.crt";
+  private String priceServiceEndpoint = "localhost:6565";
+
+  private String stockServiceEndpoint = "172.17.0.5:6565";
+
+  private String supplierServiceEndpoint = "172.17.0.6:6565";
+
+  private final String priceServerKeyPath = "key/ca.crt";
+  private final String stockServerKeyPath = "key/castock.crt";
+  private final String supplierServerKeyPath = "key/ca.crt";
 
   @Bean(name = "priceChannel")
   Channel priceChannel() throws Exception {
