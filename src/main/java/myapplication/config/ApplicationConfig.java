@@ -21,12 +21,12 @@ public class ApplicationConfig {
 
   private String priceServiceEndpoint = "localhost:6565";
 
-  private String stockServiceEndpoint = "172.17.0.5:6565";
+  private String stockServiceEndpoint = "172.17.0.4:6565";
 
-  private String supplierServiceEndpoint = "172.17.0.6:6565";
+  private String supplierServiceEndpoint = "172.17.0.5:6565";
 
-  private final String priceServerKeyPath = "key/ca.crt";
-  private final String stockServerKeyPath = "key/castock.crt";
+  private final String priceServerKeyPath = "key/server2.crt";
+  private final String stockServerKeyPath = "key/ca.crt";
   private final String supplierServerKeyPath = "key/ca.crt";
 
   @Bean(name = "priceChannel")
