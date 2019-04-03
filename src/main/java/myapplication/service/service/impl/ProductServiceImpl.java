@@ -84,6 +84,15 @@ public class ProductServiceImpl implements IProductService {
   @Override
   public Product findByid(int id) {
 
+    javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
+            new javax.net.ssl.HostnameVerifier(){
+
+              public boolean verify(String hostname,
+                                    javax.net.ssl.SSLSession sslSession) {
+                return true;
+              }
+            });
+
     Product prod = productDAO.findByid(id);
     try {
       //get PriceHistory
@@ -108,7 +117,7 @@ public class ProductServiceImpl implements IProductService {
           .getPrice(GetPriceRequest.newBuilder().setProductId(id).build());
       prod.setPrice(rs.getPrice());
     } catch (Exception ex) {
-      System.out.println(ex);
+      ex.printStackTrace();
       prod.setPriceEntries(null);
       prod.setPrice(-1);
     }
@@ -119,6 +128,7 @@ public class ProductServiceImpl implements IProductService {
       prod.setStock(rs2.getStock());
     } catch (Exception ex) {
       prod.setStock(-1);
+      ex.printStackTrace();
     }
     try {
       //get list of suppliers selling this product
@@ -138,6 +148,7 @@ public class ProductServiceImpl implements IProductService {
 
       prod.setSupplierEntries(supplierList);
     } catch (Exception ex) {
+      ex.printStackTrace();
       prod.setSupplierEntries(null);
     }
     return prod;

@@ -19,7 +19,7 @@ import java.io.File;
 public class ApplicationConfig {
 
 
-  private String priceServiceEndpoint = "localhost:6565";
+  private String priceServiceEndpoint = "172.17.0.3:6565";
 
   private String stockServiceEndpoint = "172.17.0.4:6565";
 
