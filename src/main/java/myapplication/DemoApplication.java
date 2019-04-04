@@ -2,6 +2,7 @@ package myapplication;
 
 import java.util.TimeZone;
 import javax.annotation.PostConstruct;
+import javax.net.ssl.HttpsURLConnection;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -37,6 +38,7 @@ public class DemoApplication {
 
   @PostConstruct
   public void init() {
+    //HttpsURLConnection.setDefaultHostnameVerifier ((hostname, session) -> true);
     // Setting Spring Boot SetTimeZone
     TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
   }

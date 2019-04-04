@@ -25,9 +25,9 @@ public class ApplicationConfig {
 
   private String supplierServiceEndpoint = "172.17.0.5:6565";
 
-  private final String priceServerKeyPath = "key/server2.crt";
-  private final String stockServerKeyPath = "key/ca.crt";
-  private final String supplierServerKeyPath = "key/ca.crt";
+  private final String priceServerKeyPath = "key/price.crt";
+  private final String stockServerKeyPath = "key/stock.crt";
+  private final String supplierServerKeyPath = "key/supplier.crt";
 
   @Bean(name = "priceChannel")
   Channel priceChannel() throws Exception {
