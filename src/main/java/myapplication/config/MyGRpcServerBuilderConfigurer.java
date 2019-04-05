@@ -6,6 +6,7 @@ import io.grpc.netty.NettyServerBuilder;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
 import org.lognet.springboot.grpc.GRpcServerBuilderConfigurer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -13,8 +14,10 @@ import java.io.File;
 @Component
 public class MyGRpcServerBuilderConfigurer extends GRpcServerBuilderConfigurer {
 
-  private final String certChainFilePath = "key/product.crt";
-  private final String privateKeyFilePath = "key/product.key";
+  @Value("${certChainFilePath}")
+  private String certChainFilePath;
+  @Value("${privateKeyFilePath}")
+  private String privateKeyFilePath;
 
   private SslContextBuilder getSslContextBuilder() throws Exception {
     SslContextBuilder sslContextBuilder =
