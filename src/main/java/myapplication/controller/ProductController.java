@@ -87,10 +87,4 @@ public class ProductController {
       return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
   }
-
-  @GetMapping("test/{id}")
-  public ResponseEntity<Integer> test(@PathVariable("id") int id) {
-    return new ResponseEntity<Integer>(productService.test(id), HttpStatus.OK);
-  }
-
 }

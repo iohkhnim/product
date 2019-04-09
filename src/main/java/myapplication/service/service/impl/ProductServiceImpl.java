@@ -204,9 +204,4 @@ public class ProductServiceImpl implements IProductService {
       return false;
     }
   }
-
-  @Override
-  public int test(int id) {
-    return stockService.getStock(GetStockRequest.newBuilder().setProductId(id).build()).getStock();
-  }
 }
