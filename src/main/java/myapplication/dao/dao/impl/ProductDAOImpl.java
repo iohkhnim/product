@@ -41,16 +41,16 @@ public class ProductDAOImpl implements IProductDAO {
    * {@inheritDoc}
    */
   @Override
-  public Boolean create(Product product) {
+  public int create(Product product) {
     try {
       product.setCreatedTime(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
       product.setUpdatedTime(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
 
       // create new Product
       entityManager.persist(product);
-      return true;
+      return product.getId();
     } catch (Exception ex) {
-      return false;
+      return -1;
     }
   }
 
@@ -58,7 +58,7 @@ public class ProductDAOImpl implements IProductDAO {
    * {@inheritDoc}
    */
   @Override
-  public Boolean update(Product product) {
+  public int update(Product product) {
     try {
       Product prod = findByid(product.getId());
       prod.setName(product.getName());
@@ -68,9 +68,9 @@ public class ProductDAOImpl implements IProductDAO {
       }
       prod.setUpdatedTime(Calendar.getInstance(TimeZone.getTimeZone("GMT")).getTime());
       entityManager.flush();
-      return true;
+      return product.getId();
     } catch (Exception ex) {
-      return false;
+      return -1;
     }
   }
 

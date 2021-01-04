@@ -14,23 +14,23 @@ import java.io.File;
 @Component
 public class MyGRpcServerBuilderConfigurer extends GRpcServerBuilderConfigurer {
 
-  @Value("${certChainFilePath}")
-  private String certChainFilePath;
-  @Value("${privateKeyFilePath}")
-  private String privateKeyFilePath;
+    @Value("${certChainFilePath}")
+    private String certChainFilePath;
+    @Value("${privateKeyFilePath}")
+    private String privateKeyFilePath;
 
-  private SslContextBuilder getSslContextBuilder() throws Exception {
-    SslContextBuilder sslContextBuilder =
-        SslContextBuilder.forServer(new File(certChainFilePath), new File(privateKeyFilePath));
-    return GrpcSslContexts.configure(sslContextBuilder, SslProvider.OPENSSL);
-  }
-
-  @Override
-  public void configure(ServerBuilder<?> serverBuilder) {
-    try {
-      ((NettyServerBuilder) serverBuilder).sslContext(getSslContextBuilder().build()).build();
-    } catch (Exception ex) {
-      ex.printStackTrace();
+    private SslContextBuilder getSslContextBuilder() throws Exception {
+        SslContextBuilder sslContextBuilder =
+                SslContextBuilder.forServer(new File(certChainFilePath), new File(privateKeyFilePath));
+        return GrpcSslContexts.configure(sslContextBuilder, SslProvider.OPENSSL);
     }
-  }
+
+    @Override
+    public void configure(ServerBuilder<?> serverBuilder) {
+        try {
+            ((NettyServerBuilder) serverBuilder).sslContext(getSslContextBuilder().build()).build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }

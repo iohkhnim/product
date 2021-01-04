@@ -49,12 +49,12 @@ public class ProductController {
    * @return Https status according to result
    */
   @PostMapping("create")
-  public ResponseEntity<Void> create(@RequestBody Product product) {
-    Boolean flag = productService.create(product);
-    if (flag.equals(true)) {
-      return new ResponseEntity<>(HttpStatus.CREATED);
+  public ResponseEntity<String> create(@RequestBody Product product) {
+    int id = productService.create(product);
+    if (id > 0) {
+      return new ResponseEntity<>(String.valueOf(id), HttpStatus.CREATED);
     } else {
-      return new ResponseEntity<>(HttpStatus.CONFLICT);
+      return new ResponseEntity<>("-1", HttpStatus.CONFLICT);
     }
   }
 
@@ -64,12 +64,12 @@ public class ProductController {
    * @return Https status according to result
    */
   @PutMapping("update")
-  public ResponseEntity<Void> update(@RequestBody Product product) {
-    Boolean flag = productService.update(product);
-    if (flag.equals(true)) {
-      return new ResponseEntity<>(HttpStatus.OK);
+  public ResponseEntity<String> update(@RequestBody Product product) {
+    int id = productService.update(product);
+    if (id > 0) {
+      return new ResponseEntity<>(String.valueOf(id),HttpStatus.OK);
     } else {
-      return new ResponseEntity<>(HttpStatus.CONFLICT);
+      return new ResponseEntity<>("-1", HttpStatus.CONFLICT);
     }
   }
 

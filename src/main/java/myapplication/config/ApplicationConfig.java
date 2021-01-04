@@ -20,15 +20,19 @@ public class ApplicationConfig {
 
   @Value("${priceServiceEndpoint}")
   private String priceServiceEndpoint;
+
   @Value("${stockServiceEndpoint}")
   private String stockServiceEndpoint;
+
   @Value("${supplierServiceEndpoint}")
   private String supplierServiceEndpoint;
 
   @Value("${priceServerKeyPath}")
   private String priceServerKeyPath;
+
   @Value("${stockServerKeyPath}")
   private String stockServerKeyPath;
+
   @Value("${supplierServerKeyPath}")
   private String supplierServerKeyPath;
 
@@ -38,15 +42,18 @@ public class ApplicationConfig {
         .negotiationType(NegotiationType.TLS)
         .sslContext(GrpcSslContexts.forClient().trustManager(new File(priceServerKeyPath)).build())
         .build();
+    // return ManagedChannelBuilder.forTarget(priceServiceEndpoint).usePlaintext().build();
   }
 
   @Bean(name = "stockChannel")
   Channel stockChannel() {
-    try{
-    return NettyChannelBuilder.forTarget(stockServiceEndpoint)
-        .negotiationType(NegotiationType.TLS)
-        .sslContext(GrpcSslContexts.forClient().trustManager(new File(stockServerKeyPath)).build())
-        .build();
+    try {
+      return NettyChannelBuilder.forTarget(stockServiceEndpoint)
+          .negotiationType(NegotiationType.TLS)
+          .sslContext(
+              GrpcSslContexts.forClient().trustManager(new File(stockServerKeyPath)).build())
+          .build();
+      // return ManagedChannelBuilder.forTarget(stockServiceEndpoint).usePlaintext().build();
     } catch (Exception ex) {
       ex.printStackTrace();
     }
@@ -60,6 +67,7 @@ public class ApplicationConfig {
         .sslContext(
             GrpcSslContexts.forClient().trustManager(new File(supplierServerKeyPath)).build())
         .build();
+    // return ManagedChannelBuilder.forTarget(supplierServiceEndpoint).usePlaintext().build();
   }
 
   @Bean(name = "priceService")

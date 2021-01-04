@@ -28,7 +28,7 @@ public interface IProductService {
    * @param product Product object contains information
    * @return Return a boolean value according to result
    */
-  Boolean create(Product product);
+  int create(Product product);
 
   /**
    * <p>This method passes value to DAO in order to update a product in database</p>
@@ -36,7 +36,7 @@ public interface IProductService {
    * @param product Product object contains information
    * @return Return a boolean value according to result
    */
-  Boolean update(Product product);
+  int update(Product product);
 
   /**
    * <p>This method passes value to DAO in order to delete a product in database

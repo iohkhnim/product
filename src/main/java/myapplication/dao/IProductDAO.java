@@ -26,7 +26,7 @@ public interface IProductDAO {
    * @param product Product object contains information
    * @return Return a boolean value according to result
    */
-  Boolean create(Product product);
+  int create(Product product);
 
   /**
    * <p>This method update a product in database</p>
@@ -34,7 +34,7 @@ public interface IProductDAO {
    * @param product Product object contains information
    * @return Return a boolean value according to result
    */
-  Boolean update(Product product);
+  int update(Product product);
 
   /**
    * <p>This method deletes a product in database with given product ID</p>
