@@ -103,10 +103,15 @@
       <artifactId>java-jwt</artifactId>
       <version>3.8.0</version>
     </dependency>
-    <dependency>
+<!--    <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>9.4-1206-jdbc42</version>
+    </dependency>-->
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 
